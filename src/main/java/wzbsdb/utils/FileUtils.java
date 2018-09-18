@@ -3,9 +3,16 @@ package wzbsdb.utils;
 import com.alibaba.fastjson.JSON;
 import wzbsdb.Video;
 
-import java.awt.datatransfer.SystemFlavorMap;
 import java.io.*;
 
+/**
+ * 〈一句话功能简述〉<br>
+ *  文件工具类
+ *
+ * @author Surging
+ * @create 2018/9/18
+ * @since 1.0.0
+ */
 public class FileUtils {
 
     private static String savePath ="D:\\Download";
@@ -22,7 +29,10 @@ public class FileUtils {
             fileParent.mkdirs();
         }
         file.createNewFile();
+        // 读取JSON文件
+        // 转成JSON
         String json = JSON.toJSONString(video);
+        // 写入文件 true 为不是覆盖
         try (Writer os = new OutputStreamWriter(new FileOutputStream(file,true))){
             os.write(json);
         }

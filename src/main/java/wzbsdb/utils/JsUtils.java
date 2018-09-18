@@ -6,9 +6,32 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.StringReader;
 
+/**
+ * 〈一句话功能简述〉<br>
+ *  调用原生JS方法 解密一段JS
+ *
+ * @author Surging
+ * @create 2018/9/18
+ * @since 1.0.0
+ */
 public class JsUtils {
+
+    /**
+     * 定义自己的 JS方法
+     * function getJson(url) {
+     *     var code = url.replace(/^eval/, "");
+     *     return eval(code)
+     * };
+     */
     public static final String routeScript = "function getJson(url){var code=url.replace(/^eval/,\"\");return eval(code)};";
 
+    /**
+     * 传入需要eval 解密的字符串
+     * @param evalCode
+     * @return
+     * @throws ScriptException
+     * @throws NoSuchMethodException
+     */
     public static String encode(String evalCode) throws ScriptException, NoSuchMethodException {
         //创建一个脚本引擎管理器
         ScriptEngineManager manager = new ScriptEngineManager();
