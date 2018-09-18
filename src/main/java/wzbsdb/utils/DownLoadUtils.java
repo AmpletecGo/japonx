@@ -10,8 +10,9 @@ public class DownLoadUtils {
 
     /**
      * 从网络Url中下载文件
-     * @param urlStr
-     * @param fileName
+     * @param urlStr    下载链接
+     * @param fileName  番号
+     * @param directed  演员名称
      * @throws IOException
      */
     public static void  downLoadFromUrl(String urlStr,String fileName, String directed) throws IOException {
@@ -25,24 +26,29 @@ public class DownLoadUtils {
         InputStream inputStream = conn.getInputStream();
         //获取自己数组
         byte[] getData = readInputStream(inputStream);
-        // 得到番号
-        String designation = fileName.substring(0,fileName.indexOf("-"));
+        // 得到后缀判断是什么类型 比如:.vtt 或者.jpg .mp4
+        String suffix = urlStr.substring(urlStr.lastIndexOf("."));
+        // 得到片商 比如:SSNI
+        String studio = fileName.substring(0,fileName.indexOf("-"));
+        /*String designation = fileName.replace(".vtt","");*/
 
         //文件保存位置
-        File saveDir = new File(savePath+"\\"+designation+"\\"+directed);
+        File saveDir = new File(savePath+"\\"+studio+"\\"+directed+"\\"+fileName.replace("-item",""));
         if(!saveDir.exists()){
             saveDir.mkdirs();
         }
+        // 番号+后缀拼接
+        String saveName = fileName + suffix;
         // 取出所有文件夹
         File[] files = saveDir.listFiles();
         for (int i = 0; i < files.length; i++) {
             if (files[i].isFile()) {
-                if (fileName.equalsIgnoreCase(files[i].getName())){
+                if (saveName.equalsIgnoreCase(files[i].getName())){
                     return;
                 }
             }
         }
-        File file = new File(saveDir+File.separator+fileName);
+        File file = new File(saveDir + File.separator+saveName);
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(getData);
         if(fos!=null){
@@ -76,7 +82,7 @@ public class DownLoadUtils {
     public static void main(String[] args) {
         try{
             downLoadFromUrl("https://www.japonx.net/upload/admin/20180910/6b55eba17d9bd7890f48c59443dbdfef.vtt",
-                    "MUDR-048.vtt","平手茜");
+                    "MUDR-048-item","平手茜");
         }catch (Exception e) {
             e.printStackTrace();
         }

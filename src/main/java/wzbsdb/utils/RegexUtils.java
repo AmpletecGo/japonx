@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * @create 2018/9/18
  * @since 1.0.0
  */
-public class RegUtils {
+public class RegexUtils {
 
     /**
      * 获取视频地址
@@ -21,8 +21,7 @@ public class RegUtils {
      * @return
      */
     public static String videoUrl(String scriptResult) {
-        //String reg = "[a-zA-z]+://.+\\.mp4";
-        String regex = "https://player.japronx.com/.+\\.mp4";
+        String regex = "http[s]?://[^\\s]+.mp4";
         return stringInit(regex, scriptResult);
     }
 
@@ -33,8 +32,18 @@ public class RegUtils {
      */
     public static String subUrl(String scriptResult) {
         String regex = "/upload/admin/.+\\.vtt";
-        return stringInit(regex, scriptResult.replace("url':'", ""));
+        return stringInit(regex, scriptResult);
     }
+
+    /**
+     * 获取预览图地址
+     * @param scriptResult
+     * @return
+     */
+    /*public static String itemUrl(String scriptResult) {
+        String regex = "https://image.japronx.com/[^\\s]+.png";
+        return stringInit(regex, scriptResult);
+    }*/
 
     /**
      * 获取加密的字符串

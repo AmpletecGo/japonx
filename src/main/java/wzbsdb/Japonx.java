@@ -8,9 +8,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import wzbsdb.utils.DownLoadUtils;
-import wzbsdb.utils.FileUtils;
+import wzbsdb.utils.JsonUtils;
 import wzbsdb.utils.JsUtils;
-import wzbsdb.utils.RegUtils;
+import wzbsdb.utils.RegexUtils;
 
 import javax.script.ScriptException;
 import java.io.*;
@@ -28,8 +28,10 @@ import java.util.Set;
  */
 public class Japonx {
 
+    //域名
     public static String BASE_URL = "https://www.japonx.net";
 
+    //中文地址
     public static String SUB_URL = "/portal/index/search/zimu_id/35.html";
 
     public static void main(String[] args) throws IOException {
@@ -61,14 +63,12 @@ public class Japonx {
             Element element = doc.getElementById("works");
             Elements li = element.getElementsByTag("li");
             li.stream().forEach(e -> {
-                // 演员
-                String videoStaring = e.getElementsByTag("p").text();
                 // 封面图
-                String videoImage = e.getElementsByTag("img").attr("src");
-                // 详细页图片
-                String videoLink = BASE_URL + e.getElementsByTag("a").first().attr("href");
+                String indexUrl = e.getElementsByTag("img").attr("src");
+                // 详细页地址
+                String detailLink = BASE_URL + e.getElementsByTag("a").first().attr("href");
                 try {
-                    Document detailElement = Jsoup.connect(videoLink).get();
+                    Document detailElement = Jsoup.connect(detailLink).get();
                     // 影片名称
                     String videoName = detailElement.title();
                     // 简介
@@ -86,13 +86,15 @@ public class Japonx {
                     // 获取加密的eval
                     String fullHtml = detailElement.toString();
                     // 解密eval
-                    String evalJs = JsUtils.encode(RegUtils.evalUrl(fullHtml));
+                    String evalJs = JsUtils.encode(RegexUtils.evalUrl(fullHtml));
                     // 字幕
-                    String subUrl = RegUtils.subUrl(evalJs);
+                    String subUrl = RegexUtils.subUrl(evalJs);
                     // 视频地址
-                    String videoUrl = RegUtils.videoUrl(evalJs);
-
+                    String videoUrl = RegexUtils.videoUrl(evalJs);
+                    // 预览图
+                    String itemUrl = detailElement.select(".bx-viewport ul li img").eq(1).attr("src");
                     Video video = new Video();
+                    video.setIndexUrl(indexUrl);
                     video.setRuntime(runtime);
                     video.setDescription(description);
                     video.setName(videoName);
@@ -101,13 +103,18 @@ public class Japonx {
                     video.setVideoUrl(videoUrl);
                     video.setDesignation(designation);
                     video.setStudio(studio);
+                    video.setItemUrl(itemUrl);
+                    // 下载封面图
+                    DownLoadUtils.downLoadFromUrl(video.getIndexUrl(), video.getDesignation(), video.getDirected());
+                    // 下载详细图
+                    DownLoadUtils.downLoadFromUrl(video.getItemUrl(), video.getDesignation()+"-item", video.getDirected());
                     if (StringUtils.isNotBlank(subUrl)){
                         video.setSubtitleUrl(BASE_URL + subUrl);
                         // 下载字幕
-                        DownLoadUtils.downLoadFromUrl(video.getSubtitleUrl(), video.getDesignation() + ".vtt", video.getDirected());
+                        DownLoadUtils.downLoadFromUrl(video.getSubtitleUrl(), video.getDesignation(), video.getDirected());
                     }
                     // 保存
-                    FileUtils.save(video);
+                    JsonUtils.save(video);
                     videoList.add(video);
                     System.out.println(video.getDesignation() + "------------------成功");
                 } catch (IOException e1) {

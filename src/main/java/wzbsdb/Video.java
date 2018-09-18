@@ -41,6 +41,12 @@ public class Video implements Serializable {
     // 影片链接
     private String videoUrl;
 
+    // 封面图
+    private String indexUrl;
+
+    // 预览图
+    private String itemUrl;
+
     //更新时间
     private LocalDate createTime;
 }
