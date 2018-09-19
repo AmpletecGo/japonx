@@ -48,7 +48,7 @@ public class DownLoadUtils {
                 }
             }
         }
-        File file = new File(saveDir + File.separator+saveName);
+        File file = new File(saveDir + File.separator +saveName);
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(getData);
         if(fos!=null){

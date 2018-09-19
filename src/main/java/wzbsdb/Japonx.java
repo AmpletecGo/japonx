@@ -1,6 +1,5 @@
 package wzbsdb;
 
-import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -8,12 +7,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import wzbsdb.utils.DownLoadUtils;
-import wzbsdb.utils.JsonUtils;
 import wzbsdb.utils.JsUtils;
+import wzbsdb.utils.JsonUtils;
 import wzbsdb.utils.RegexUtils;
 
 import javax.script.ScriptException;
-import java.io.*;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,9 +35,6 @@ public class Japonx {
 
     public static void main(String[] args) throws IOException {
 
-        // 文件地址
-        String path = "D:\\123.json";
-
         //获取请求连接
         Connection init = Jsoup.connect(BASE_URL + SUB_URL);
 
@@ -54,27 +50,42 @@ public class Japonx {
         Elements pageElements = initDoc.getElementsByClass("page-link");
         String page = pageElements.get(pageElements.size() - 2).text();
         //String page = "1";
-        Set<Video> videoList = new HashSet<>();
-        for (int i = 1; i <= Integer.valueOf(page); i++) {
+
+        // 保存总进度
+        Set<Video> videoSet = new HashSet<>();
+        String firstName = null;
+        String startName = null;
+        long count = 0;
+        start:for (int i = 1; i <= Integer.valueOf(page); i++) {
             // 下一页
-            Connection con = Jsoup.connect(BASE_URL + SUB_URL + "&page=" + i);
+            Connection con = Jsoup.connect(BASE_URL + SUB_URL + "&page=" +i);
             Document doc = con.get();
+
             // 获取详细信息
             Element element = doc.getElementById("works");
             Elements li = element.getElementsByTag("li");
-            li.stream().forEach(e -> {
+
+            for (Element e : li) {
                 // 封面图
                 String indexUrl = e.getElementsByTag("img").attr("src");
                 // 详细页地址
                 String detailLink = BASE_URL + e.getElementsByTag("a").first().attr("href");
                 try {
                     Document detailElement = Jsoup.connect(detailLink).get();
+                    // 番号
+                    String designation = detailElement.getElementsByClass("no-hover").get(0).text();
+                    count++;
+                    if (count == 1){
+                        firstName = designation;
+                    }
+                    if (JsonUtils.speed(designation)) {
+                        startName = designation;
+                        break start;
+                    }
                     // 影片名称
                     String videoName = detailElement.title();
                     // 简介
                     String description = detailElement.select("meta[name=description]").get(0).attr("content");
-                    // 番号
-                    String designation = detailElement.getElementsByClass("no-hover").get(0).text();
                     // 时长
                     String runtime = detailElement.getElementsByClass("no-hover").get(1).text();
                     // 演员
@@ -107,16 +118,16 @@ public class Japonx {
                     // 下载封面图
                     DownLoadUtils.downLoadFromUrl(video.getIndexUrl(), video.getDesignation(), video.getDirected());
                     // 下载详细图
-                    DownLoadUtils.downLoadFromUrl(video.getItemUrl(), video.getDesignation()+"-item", video.getDirected());
-                    if (StringUtils.isNotBlank(subUrl)){
+                    DownLoadUtils.downLoadFromUrl(video.getItemUrl(), video.getDesignation() + "-item", video.getDirected());
+                    if (StringUtils.isNotBlank(subUrl)) {
                         video.setSubtitleUrl(BASE_URL + subUrl);
                         // 下载字幕
                         DownLoadUtils.downLoadFromUrl(video.getSubtitleUrl(), video.getDesignation(), video.getDirected());
                     }
                     // 保存
                     JsonUtils.save(video);
-                    videoList.add(video);
-                    System.out.println(video.getDesignation() + "------------------成功");
+                    videoSet.add(video);
+                    System.out.println(video.getDesignation() + "==================成功");
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 } catch (NoSuchMethodException e1) {
@@ -124,20 +135,10 @@ public class Japonx {
                 } catch (ScriptException e1) {
                     e1.printStackTrace();
                 }
-            });
-        }
-        String json = JSON.toJSONString(videoList);
-        try (Writer os = new OutputStreamWriter(new FileOutputStream(path))){
-            os.write(json);
-        }
-        System.out.println("成功抓取:" +videoList.size());
-        /*videoList.stream().forEach(e -> {
-            try {
-                DownLoadUtils.downLoadFromUrl(e.getSubtitleUrl(),e.getDesignation()+".vtt","D:\\Download","");
-                System.out.println("成功下载"+e.getName());
-            } catch (IOException e1) {
-                e1.printStackTrace();
             }
-        });*/
+        }
+        //记录下这次的数据
+        JsonUtils.saveSpeed(videoSet,startName,firstName);
+        System.out.println("成功抓取:" + videoSet.size() +"条数据\n开始的番号" +firstName);
     }
 }
