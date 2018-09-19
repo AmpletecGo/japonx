@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import wzbsdb.dataobject.Video;
 import wzbsdb.utils.DownLoadUtils;
 import wzbsdb.utils.JsUtils;
 import wzbsdb.utils.JsonUtils;

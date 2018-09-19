@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import wzbsdb.Video;
+import wzbsdb.dataobject.Video;
 
 import java.io.*;
 import java.util.HashSet;

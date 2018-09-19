@@ -1,6 +1,7 @@
 package wzbsdb;
 
 import com.alibaba.fastjson.JSON;
+import wzbsdb.dataobject.Video;
 
 import java.io.*;
 

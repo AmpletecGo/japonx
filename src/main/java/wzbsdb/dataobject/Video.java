@@ -1,4 +1,4 @@
-package wzbsdb;
+package wzbsdb.dataobject;
 
 import lombok.Data;
 
