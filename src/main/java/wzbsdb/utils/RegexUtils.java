@@ -1,5 +1,7 @@
 package wzbsdb.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,8 +23,14 @@ public class RegexUtils {
      * @return
      */
     public static String videoUrl(String scriptResult) {
-        String regex = "http[s]?://[^\\s]+.mp4";
-        return stringInit(regex, scriptResult);
+        String mp4 = "http[s]?://[^\\s]+.mp4";
+        String m3u8 = "http[s]?://[^\\s]+.m3u8";
+        String resultMp4 = stringInit(mp4, scriptResult);
+        String resultM3u8 = stringInit(m3u8, scriptResult);
+        if (StringUtils.isNotBlank(resultMp4)){
+            return resultMp4;
+        }
+        return resultM3u8;
     }
 
     /**

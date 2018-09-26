@@ -34,6 +34,9 @@ public class Japonx {
     //中文地址
     public static String SUB_URL = "/portal/index/search/zimu_id/35.html";
 
+    //视频js地址
+    public static String JS_URL = "/portal/index/ajax_get_js.html?id=";
+
     public static void main(String[] args) throws IOException {
 
         //获取请求连接
@@ -95,16 +98,23 @@ public class Japonx {
                     String createTime = detailElement.getElementsByTag("dd").get(3).text();
                     // 片商
                     String studio = detailElement.getElementsByTag("dd").get(5).text();
+                    // 改版了这边废弃
                     // 获取加密的eval
-                    String fullHtml = detailElement.toString();
+                    //String fullHtml = detailElement.toString();
+                    //获取id地址
+                    String id = detailLink.substring(detailLink.lastIndexOf("/")+1).replace(".html","");
+                    //获取加密的eval
+                    Connection.Response resp = Jsoup.connect(BASE_URL + JS_URL + id).method(Connection.Method.GET).execute();
+                    String js = resp.body();
                     // 解密eval
-                    String evalJs = JsUtils.encode(RegexUtils.evalUrl(fullHtml));
+                    String evalJs = JsUtils.encode(RegexUtils.evalUrl(js));
                     // 字幕
                     String subUrl = RegexUtils.subUrl(evalJs);
                     // 视频地址
                     String videoUrl = RegexUtils.videoUrl(evalJs);
                     // 预览图
                     String itemUrl = detailElement.select(".bx-viewport ul li img").eq(1).attr("src");
+
                     Video video = new Video();
                     video.setIndexUrl(indexUrl);
                     video.setRuntime(runtime);
