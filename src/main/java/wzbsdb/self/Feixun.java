@@ -1,4 +1,4 @@
-package wzbsdb;
+package wzbsdb.self;
 
 import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class Feixun {
 
-    public static void main(String[] args) throws java.text.ParseException {
+    public static void main(String[] args) {
         String name = "17092509262";
         String password = "19940107";
 
@@ -54,14 +54,14 @@ public class Feixun {
 
                 res = httpClient.execute(get, context);
                 // 获取常用Cookie,包括_xsrf信息
-                System.out.println("访问知乎首页后的获取的常规Cookie:===============");
+                System.out.println("访问斐讯获取的常规Cookie:===============");
                 for (Cookie c : cookieStore.getCookies()) {
                     System.out.println(c.getName() + ": " + c.getValue());
                 }
                 res.close();
 
                 // 构造post数据
-                List<NameValuePair> valuePairs = new LinkedList<NameValuePair>();
+                List<NameValuePair> valuePairs = new LinkedList<>();
                 valuePairs.add(new BasicNameValuePair("uname", name));
                 valuePairs.add(new BasicNameValuePair("password", password));
                 /*valuePairs.add(new BasicNameValuePair("remember_me", "true"));*/

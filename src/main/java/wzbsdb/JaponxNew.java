@@ -51,7 +51,7 @@ public class JaponxNew {
                     Elements elements = detailElement.getElementsByClass("dplayer-video-wrap").first().getElementsByTag("video");
                     String videoUrl = elements.attr("src");
                     String subtitleUrl = elements.first().getElementsByTag("track").attr("src");
-                    System.out.println(videoUrl    +    subtitleUrl);
+                    System.out.println(videoUrl + subtitleUrl);
                     //System.out.println(videoName +"\t" +designation +"\t" +runtime +"\t" +description +"\n");
                 } catch (Exception e1) {
                     e1.printStackTrace();

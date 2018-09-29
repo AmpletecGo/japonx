@@ -1,8 +1,5 @@
 package wzbsdb;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -19,7 +16,7 @@ public class Test {
                 "    }";
         //String routeScript = "function getJson(url){var code= code.replace(/^eval/,\"\");return eval(code)};";
 
-        String scriptResult ="";//脚本的执行结果
+        String scriptResult = "";//脚本的执行结果
 
         //创建一个脚本引擎管理器
         ScriptEngineManager manager = new ScriptEngineManager();
@@ -33,9 +30,8 @@ public class Test {
         String reg = "[a-zA-z]+://.+\\.mp4";
         Pattern p = Pattern.compile(reg);
         //让正则对象和要作用的字符串相关联。获取匹配器对象。
-        Matcher m  = p.matcher(scriptResult);
-        while(m.find())
-        {
+        Matcher m = p.matcher(scriptResult);
+        while (m.find()) {
             System.out.println(m.group());
         }
 
@@ -43,9 +39,8 @@ public class Test {
         String subReg = "url':'/.+\\.vtt";
         Pattern subP = Pattern.compile(subReg);
         Matcher s = subP.matcher(scriptResult);
-        while(s.find())
-        {
-            System.out.println(s.group().replace("url':'",""));
+        while (s.find()) {
+            System.out.println(s.group().replace("url':'", ""));
         }
     }
 }

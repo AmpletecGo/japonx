@@ -2,8 +2,12 @@ package wzbsdb.dataobject;
 
 import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -13,15 +17,18 @@ import java.time.LocalDate;
  * @since 1.0.0
  */
 @Data
+@Entity
+@Table(name = "video")
 public class Video implements Serializable {
 
     private static final long serialVersionUID = 6738763469069805372L;
 
+    // 番号
+    @Id
+    private String designation;
+
     // 影片名称
     private String name;
-
-    // 番号
-    private String designation;
 
     // 时长
     private String runtime;
@@ -49,4 +56,7 @@ public class Video implements Serializable {
 
     //更新时间
     private LocalDate createTime;
+
+    //更新时间
+    private LocalDateTime updateTime;
 }
