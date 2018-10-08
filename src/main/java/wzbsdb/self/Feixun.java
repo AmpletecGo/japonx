@@ -27,8 +27,8 @@ import java.util.List;
 public class Feixun {
 
     public static void main(String[] args) {
-        String name = "17092509262";
-        String password = "19940107";
+        String name = "17327080706";
+        String password = "ztb19940107";
 
         // 全局请求设置
         RequestConfig globalConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
@@ -85,7 +85,7 @@ public class Feixun {
                 }
 
                 // 构造一个新的get请求，用来测试登录是否成功
-                for (int i = 0; i < 100; i++) {
+                while (true) {
                     HttpGet newGet = new HttpGet("https://mall.phicomm.com/checkout.html");
                     res = httpClient.execute(newGet, context);
                     String content = EntityUtils.toString(res.getEntity());
