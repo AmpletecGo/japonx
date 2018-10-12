@@ -21,14 +21,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Feixun {
 
     public static void main(String[] args) {
-        String name = "17327080706";
-        String password = "ztb19940107";
+        String name = "17092509262";
+        String password = "19940107";
 
         // 全局请求设置
         RequestConfig globalConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
@@ -91,7 +93,7 @@ public class Feixun {
                     String content = EntityUtils.toString(res.getEntity());
                     Document doc = Jsoup.parse(content);
                     Element a = doc.getElementsByClass("page-header").first();
-                    System.out.println(a.text());
+                    System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"))+"\t"+a.text());
                     res.close();
                 }
             } finally {
