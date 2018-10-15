@@ -2,12 +2,11 @@ package wzbsdb.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import wzbsdb.dataobject.Video;
 import wzbsdb.repository.IVideoRepository;
 import wzbsdb.service.IVideoService;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -23,8 +22,17 @@ public class VideoServiceImpl implements IVideoService {
     private IVideoRepository videoRepository;
 
     @Override
-    public List<Video> saveAll(Set<Video> videoList) {
-        List<Video> videoListSave = videoRepository.saveAll(videoList);
-        return videoListSave;
+    public boolean isExist(String designation) {
+        Video video = videoRepository.findByDesignation(designation);
+        if (ObjectUtils.isEmpty(video)){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public void save(Video video) {
+        videoRepository.save(video);
     }
 }

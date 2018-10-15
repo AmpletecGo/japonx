@@ -2,9 +2,6 @@ package wzbsdb.service;
 
 import wzbsdb.dataobject.Video;
 
-import java.util.List;
-import java.util.Set;
-
 /**
  * 〈一句话功能简述〉<br>
  *
@@ -13,5 +10,16 @@ import java.util.Set;
  * @since 1.0.0
  */
 public interface IVideoService {
-    List<Video> saveAll(Set<Video> videoList);
+    /**
+     * 番号是否已存在
+     * @param designation
+     * @return
+     */
+    boolean isExist(String designation);
+
+    /**
+     * 保存video
+     * @param video
+     */
+    void save(Video video);
 }

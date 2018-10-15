@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -45,14 +47,16 @@ public class HttpClientUtil {
      * @throws
      */
     public static String sendPost(String url, Map<String, String> headers, JSONObject data, String encoding) {
-        log.info("进入post请求方法...");
-        log.info("请求入参：URL= " + url);
-        log.info("请求入参：headers=" + JSON.toJSONString(headers));
-        log.info("请求入参：data=" + JSON.toJSONString(data));
+        // log.info("进入post请求方法...");
+        // log.info("请求入参：URL= " + url);
+        // log.info("请求入参：headers=" + JSON.toJSONString(headers));
+        // log.info("请求入参：data=" + JSON.toJSONString(data));
         // 请求返回结果
         String resultJson = null;
         // 创建Client
-        CloseableHttpClient client = HttpClients.createDefault();
+        //CloseableHttpClient client = HttpClients.createDefault();
+        RequestConfig globalConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
+        CloseableHttpClient client = HttpClients.custom().setDefaultRequestConfig(globalConfig).build();
         // 创建HttpPost对象
         HttpPost httpPost = new HttpPost();
 
@@ -171,13 +175,14 @@ public class HttpClientUtil {
      * @throws
      */
     public static String sendGet(String url,Map<String,Object> params,String encoding){
-        log.info("进入get请求方法...");
-        log.info("请求入参：URL= " + url);
-        log.info("请求入参：params=" + JSON.toJSONString(params));
+        //log.info("进入get请求方法...");
+        //log.info("请求入参：URL= " + url);
+        //log.info("请求入参：params=" + JSON.toJSONString(params));
         // 请求结果
         String resultJson = null;
         // 创建client
-        CloseableHttpClient client = HttpClients.createDefault();
+        RequestConfig globalConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
+        CloseableHttpClient client = HttpClients.custom().setDefaultRequestConfig(globalConfig).build();
         // 创建HttpGet
         HttpGet httpGet = new HttpGet();
         try {
@@ -190,7 +195,7 @@ public class HttpClientUtil {
                 }
             }
             URI uri = builder.build();
-            log.info("请求地址："+ uri);
+            // log.info("请求地址："+ uri);
             // 设置请求地址
             httpGet.setURI(uri);
             // 发送请求，返回响应对象

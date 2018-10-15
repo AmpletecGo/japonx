@@ -10,5 +10,6 @@ import wzbsdb.dataobject.Video;
  * @create 2018/9/20
  * @since 1.0.0
  */
-public interface IVideoRepository extends JpaRepository<Video, String> {
+public interface IVideoRepository extends JpaRepository<Video, Integer> {
+    Video findByDesignation(String designation);
 }

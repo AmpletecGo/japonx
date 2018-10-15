@@ -2,9 +2,7 @@ package wzbsdb.dataobject;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,8 +21,12 @@ public class Video implements Serializable {
 
     private static final long serialVersionUID = 6738763469069805372L;
 
-    // 番号
+    //自增
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    // 番号
     private String designation;
 
     // 影片名称
@@ -54,9 +56,9 @@ public class Video implements Serializable {
     // 预览图
     private String itemUrl;
 
-    //更新时间
+    // 影片时间
     private LocalDate createTime;
 
-    //更新时间
+    // 更新时间
     private LocalDateTime updateTime;
 }
