@@ -26,11 +26,18 @@ public class FeixunStock {
         while (true) {
             for (Integer goodsId : GOODS_IDS) {
                 String res = HttpClientUtil.sendGet(BASE_URL + goodsId);
-                JSONObject jsonObject = JSONObject.parseObject(res).getJSONObject("data").getJSONObject("product");
-                String goods_id = jsonObject.getString("goods_id");
-                String stock = jsonObject.getString("stock");
-                String name = jsonObject.getString("name");
-                System.out.println("goods_id: "+goods_id+ "\t\t" +name+ "\t" +LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"))+ "\t\t库存:"+ stock);
+                try {
+                    JSONObject jsonObject = JSONObject.parseObject(res).getJSONObject("data").getJSONObject("product");
+                    String goods_id = jsonObject.getString("goods_id");
+                    String stock = jsonObject.getString("stock");
+                    String name = jsonObject.getString("name");
+                    System.out.println("goods_id: "+goods_id+ "\t\t" +name+ "\t" +LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"))+ "\t\t库存:"+ stock);
+                    if (Integer.valueOf(stock) > 0) {
+                        System.out.println("结束库存查询");
+                        break;
+                    }
+                } catch (Exception e) {
+                }
             }
         }
 
