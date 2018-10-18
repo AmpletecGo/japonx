@@ -8,6 +8,7 @@ package com.wzbsdb.common;
  * @since 1.0.0
  */
 public interface Constant {
+
     //域名
     public static String BASE_URL = "https://www.japonx.vip";
 
@@ -17,6 +18,9 @@ public interface Constant {
     //视频js地址
     public static String JS_URL = "/portal/index/ajax_get_js.html?id=";
 
-    // 保存地址
-    public static String SAVE_PATH = "E:\\Download";
+    // Windows保存地址
+    public static String WIN_SAVE_PATH = "E:\\Download";
+
+    // Linux保存位置
+    public static String LINUX_SAVE_PATH = "/home";
 }

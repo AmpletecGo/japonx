@@ -23,7 +23,7 @@ public class ScheduledService {
     /**
      * 每天00:00启动一次
      */
-    @Scheduled(cron = "0 14 17 * * ?")
+    @Scheduled(cron = "0 57 03 * * ?")
     public void scheduled(){
         log.info("定时任务开启");
         jpaonxService.getJpaonx();

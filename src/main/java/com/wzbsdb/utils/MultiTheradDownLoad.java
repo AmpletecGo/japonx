@@ -302,11 +302,11 @@ public class MultiTheradDownLoad {
     }
 
     /**
+     * 测试
      * @param args
      */
     public static void main(String[] args) {
-
-        String filepath = "https://qd.myapp.com/myapp/qqteam/tim/down/tim_pc.exe";
+        String filepath = "https://www.japonx.vip/upload/admin/20180910/6b55eba17d9bd7890f48c59443dbdfef.vtt";
         MultiTheradDownLoad load = new MultiTheradDownLoad(filepath ,4);
         load.downloadPart();
     }

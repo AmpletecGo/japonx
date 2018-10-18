@@ -32,8 +32,18 @@ public class DownLoadUtils {
         String studio = fileName.substring(0,fileName.indexOf("-"));
         /*String designation = fileName.replace(".vtt","");*/
 
-        //文件保存位置
-        File saveDir = new File(Constant.SAVE_PATH +"\\"+studio+"\\"+directed+"\\"+fileName.replace("-item",""));
+        // 判断系统 (Windows或者Linux)
+        String filePath = Constant.LINUX_SAVE_PATH;
+        String os = System.getProperty("os.name");
+        if(os.toLowerCase().startsWith("win")){
+            filePath = Constant.WIN_SAVE_PATH;
+        }
+
+        /**
+         * 文件保存位置
+         * 规则       /片商/演员名称/番号/
+         */
+        File saveDir = new File(filePath +File.separator+ studio +File.separator+ directed +File.separator+ fileName.replace("-item",""));
         if(!saveDir.exists()){
             saveDir.mkdirs();
         }
@@ -43,12 +53,14 @@ public class DownLoadUtils {
         File[] files = saveDir.listFiles();
         for (int i = 0; i < files.length; i++) {
             if (files[i].isFile()) {
+                // 文件已存在则返回
                 if (saveName.equalsIgnoreCase(files[i].getName())){
                     return;
                 }
             }
         }
-        File file = new File(saveDir + File.separator +saveName);
+        // 保存文件
+        File file = new File(saveDir +File.separator+ saveName);
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(getData);
         if(fos!=null){
@@ -59,8 +71,6 @@ public class DownLoadUtils {
         }
         //System.out.println("info:"+url+" download success");
     }
-
-
 
     /**
      * 从输入流中获取字节数组
@@ -81,8 +91,8 @@ public class DownLoadUtils {
 
     public static void main(String[] args) {
         try{
-            downLoadFromUrl("https://www.japonx.net/upload/admin/20180910/6b55eba17d9bd7890f48c59443dbdfef.vtt",
-                    "MUDR-048-item","平手茜");
+            downLoadFromUrl("https://www.japonx.vip/upload/admin/20180910/6b55eba17d9bd7890f48c59443dbdfef.vtt",
+                    "MUDR-048","平手茜");
         }catch (Exception e) {
             e.printStackTrace();
         }

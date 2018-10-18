@@ -22,13 +22,15 @@ import java.util.Set;
  */
 public class JsonUtils {
 
-    public static void save(Video video) throws IOException {
+    public static String filePath = Constant.WIN_SAVE_PATH;
+
+   public static void save(Video video) throws IOException {
         // 得到番号
         String fileName = video.getDesignation().toUpperCase();
         String designation = fileName.substring(0,fileName.indexOf("-"));
 
         //文件保存位置
-        File file = new File(Constant.SAVE_PATH +File.separator+ designation +File.separator+ designation+".json");
+        File file = new File(filePath +File.separator+ designation +File.separator+ designation+".json");
         File fileParent = file.getParentFile();
         if(!fileParent.exists()){
             fileParent.mkdirs();
@@ -58,7 +60,7 @@ public class JsonUtils {
      * @return
      */
     public static boolean speed(String designation){
-        File file = new File(Constant.SAVE_PATH +File.separator+ designation+".json");
+        File file = new File(filePath +File.separator+ designation+".json");
         return file.exists();
     }
 
@@ -71,13 +73,13 @@ public class JsonUtils {
         Set<Video> videoSet1 = new HashSet<>();
         videoSet1.addAll(videoSet);
         if (StringUtils.isNotBlank(startName)){
-            File oldFile = new File(Constant.SAVE_PATH +File.separator+ startName+".json");
+            File oldFile = new File(filePath +File.separator+ startName+".json");
             String content = FileUtils.readFileToString(oldFile,"UTF-8");
             List<Video> videoList = JSONArray.parseArray(content, Video.class);
             videoSet1.addAll(videoList);
             oldFile.delete();
         }
-        File file = new File(Constant.SAVE_PATH +File.separator+ firstName+".json");
+        File file = new File(filePath +File.separator+ firstName+".json");
         File fileParent = file.getParentFile();
         if(!fileParent.exists()){
             fileParent.mkdirs();

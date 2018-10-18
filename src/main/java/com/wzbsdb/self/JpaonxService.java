@@ -62,7 +62,7 @@ public class JpaonxService {
             // 开始爬虫 并记录开始时间
             task.setStartTime(LocalDateTime.now());
             start:
-            for (int i = 1; i <= Integer.valueOf(1); i++) {
+            for (int i = 1; i <= Integer.valueOf(page); i++) {
                 // 跳转下一页
                 Document doc = Jsoup.connect(Constant.BASE_URL + Constant.SUB_URL + "&page=" + i).get();
                 // 获取详细信息
@@ -79,9 +79,8 @@ public class JpaonxService {
                     Document detailElement = Jsoup.connect(detailLink).get();
                     // 番号
                     String designation = detailElement.getElementsByClass("no-hover").get(0).text();
-                    // 数量++
-                    count++;
-                    if (count == 1) {
+
+                    if (count == 0) {
                         task.setStart(designation);
                     }
                     task.setStop(designation);
@@ -150,6 +149,8 @@ public class JpaonxService {
                         // DownLoadUtils.downLoadFromUrl(video.getSubtitleUrl(), video.getDesignation(), video.getDirected());
                     }
                     videoService.save(video);
+                    // 数量++
+                    count++;
                 }
             }
             task.setStopTime(LocalDateTime.now());
