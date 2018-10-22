@@ -1,5 +1,6 @@
 package com.wzbsdb;
 
+import com.wzbsdb.common.Constant;
 import com.wzbsdb.dataobject.Video;
 import com.wzbsdb.utils.DownLoadUtils;
 import com.wzbsdb.utils.JsUtils;
@@ -29,13 +30,13 @@ import java.util.Set;
 public class Japonx {
 
     //域名
-    public static String BASE_URL = "https://www.japonx.net";
+    public static String BASE_URL = Constant.BASE_URL;
 
     //中文地址
-    public static String SUB_URL = "/portal/index/search/zimu_id/35.html";
+    public static String SUB_URL = Constant.SUB_URL;
 
     //视频js地址
-    public static String JS_URL = "/portal/index/ajax_get_js.html?id=";
+    public static String JS_URL = Constant.JS_URL;
 
     public static void main(String[] args) throws IOException {
 
